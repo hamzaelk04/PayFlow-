@@ -36,7 +36,7 @@ class CategoryController extends Controller
             'status' => 'success',
             'message' => 'Catégorie créée avec succès',
             'data' => $category
-        ]);
+        ], 201);
     }
 
     /**
