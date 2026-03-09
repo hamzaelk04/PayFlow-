@@ -65,7 +65,7 @@ class BookController extends Controller
         $validated = $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'author' => 'sometimes|required|string|max:255',
-            'summary' => 'sometimes|required',
+            'summary' => 'nullable|sometimes|required',
             'isbn' => 'sometimes|required|string|unique:books,isbn,' . $book->id,
             'published_year' => 'sometimes|required|integer|min:1500|max:' . date('Y'),
             'category_id' => 'sometimes|required|exists:categories,id',
