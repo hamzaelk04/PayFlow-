@@ -21,6 +21,7 @@ class BookFactory extends Factory
             'title' => fake()->sentence(3),
             'author' => fake()->name(),
             'isbn' => fake()->isbn13(),
+            'summary' => fake()->paragraph(),
             'published_year' => fake()->year(),
             'category_id' => Category::factory(),
         ];
