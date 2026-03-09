@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -12,7 +13,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::withCount('books')->get();
+        return response()->json([
+            'status' => 'success',
+            'data' => $categories
+        ]);
     }
 
     /**
@@ -20,30 +25,61 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $category = Category::create($validated);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Catégorie créée avec succès',
+            'data' => $category
+        ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
-        //
+        $category->load('books');
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $category
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $category->update($validated);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Catégorie mise à jour',
+            'data' => $category
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return response()->json([
+            'status' => 'success',
+            'data' => $category->books
+        ]);
     }
 }
